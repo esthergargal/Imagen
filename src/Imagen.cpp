@@ -6,14 +6,15 @@
 
 #include <cassert>
 #include <cstring>
+#include <string>
 #include <iostream>
 #include "imagenES.h"
 #include "Imagen.h"
+#include <math.h>            // Para el ceil
 
 #define byte unsigned char   //Definimos un tipo de dato llamado byte [0, 255]
 #define ERROR_UNKNOWN 1
 #define ERROR_OPEN 2
-#define ERROR_DATA 3
 
 using namespace std;
 
@@ -88,7 +89,7 @@ void errorBreak(int errorcode, const string &errordata) {
     exit(1);
 }
 
-byte leerVector(TipoImagen tipo, string fin, int &f, int &c){
+byte leerVector(TipoImagen tipo, const string fin, int &f, int &c){
     byte *img;
 
     if (tipo == TipoImagen::IMG_PGM) {
@@ -101,7 +102,7 @@ byte leerVector(TipoImagen tipo, string fin, int &f, int &c){
     return img;
 }
 
-bool escribirVector(TipoImagen tipo, string fout, const int f, const int c, byte *img){
+bool escribirVector(TipoImagen tipo, string& fout, const int f, const int c, byte *img){
     bool okay;
 
     if (tipo == TipoImagen::IMG_PGM)
@@ -111,6 +112,16 @@ bool escribirVector(TipoImagen tipo, string fout, const int f, const int c, byte
 
     return okay;
 }
+
+byte transformacion(double min, double constante, double rmin, double nivelOriginal){
+    double nivelFinal;
+    nivelFinal = min + (constante * (nivelOriginal - rmin));
+    
+    byte byteF = round(nivelFinal);
+    
+    return byteF;
+}
+
 //-----------------------CONSTRUCTORES Y DESTRUCTORES-------------------------//
 
 Imagen::Imagen (){                                  // Constructor por defecto
@@ -248,3 +259,63 @@ bool zoom(string fin, string& fout, int x1, int y1, int x2, int y2){
 }
 
 //--------------------------------EJERCICIO 4---------------------------------//
+
+bool icono(string forig, string& frdo, int nf, int nc){
+    bool okay;
+    byte *vOriginal, *vFinal;
+    int f, c, relacion;
+    double media = 0;
+
+    f = c = relacion = 0;
+    
+    TipoImagen tipo = LeerTipoImagen(fin.c_str());
+    vOriginal = leerVector(tipo, fin, f, c);                                    // Guardamos la imagen en un vector
+
+    Imagen imagenOriginal;
+    conversorVectorImagen(vOriginal, imagenOriginal);                           // Convertimos el vector a imagen para trabajar con ella
+    
+    relacion = ceil((f*c) / (nf*nc));                                           // Relación de aspecto
+    
+    /*for (int i = 0; i < f; i++)
+        for (int j=0; j<c; j++)
+           COMPLETAR */
+    
+}
+
+//--------------------------------EJERCICIO 5---------------------------------//
+
+bool aumentarConstraste(string fichE, string& fichS, const int min, const int max){
+    
+    bool okay;
+    byte *vOriginal, *vFinal;
+    int f, c;
+    double rmax, rmin;
+    
+    f = c = 0;
+    
+    TipoImagen tipo = LeerTipoImagen(fin.c_str());
+    vOriginal = leerVector(tipo, fichE, f, c);                                  // Guardamos la imagen en un vector
+
+    Imagen imagen;
+    conversorVectorImagen(vOriginal, imagen); 
+    rmax = rmin = imagen.valor_pixel(0,0);                                      // Inicializamos el valor de los niveles de grises
+    
+    for (int i = 0; i < f; i++)                                                 // Calcular niveles min y max de gris
+        for (int j=1; j<c; j++){
+            if(imagen.valor_pixel(f,c) > rmax)
+                rmax = imagen.valor_pixel(f,c);
+            if(imagen.valor_pixel(f,c) < rmin)
+                rmin = imagen.valor_pixel(f,c);
+        } 
+            
+    const double cte = (max - min)/(rmax - rmin);
+    
+    for (int i = 0; i < f; i++)
+        for (int j=0; j<c; j++)
+            imagen.asigna_pixel(f,c, transformacion(min, cte, rmin, imagen.valor_pixel(f,c)));
+    
+    conversorImagenVector(imagen, vFinal);
+    okay = escribirVector(tipo, fichS, f, c);
+    
+    return okay;
+}

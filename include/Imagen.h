@@ -114,9 +114,11 @@ Imagen conversorVectorImagen(byte *v, Imagen &imagen);
  */
 byte conversorImagenVector(const Imagen &imagen, byte *v);
 
-byte leerVector(TipoImagen tipo, std::string fin, int &f, int &c);
+byte leerVector(TipoImagen tipo, const std::string fin, int &f, int &c);
 
-bool escribirVector(TipoImagen tipo, std::string fout, const int f, const int c, byte *img);
+bool escribirVector(TipoImagen tipo, std::string& fout, const int f, const int c, byte *img);
+
+byte transformacion(double min, double constante, double rmin, double nivelOriginal);
 
 /**
  * @brief Función que permite umbralizar una Imagen
@@ -141,5 +143,18 @@ bool umbralizar(std::string fin, std::string& fout, byte T_1, byte T_2);
  * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
  */
 bool zoom(std::string fin, std::string fout, int x1, int y1, int x2, int y2);
+
+/**
+ * @brief Función que permite disminuit el tamaño de una porción de la Imagen
+ * @param forig Nombre del fichero de entrada
+ * @param frdo Nombre del fichero de salida
+ * @param nf Número de filas del icono
+ * @param nc Número de columnas del icono
+ * @precond Debe ser un trozo cuadrado
+ * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
+ */
+bool icono(std::string forig, std::string& frdo, int nf, int nc);
+
+
 
  #endif
