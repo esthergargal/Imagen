@@ -227,31 +227,6 @@ bool zoom(string fin, string& fout, int x1, int y1, int x2, int y2){
           imagen.asigna_pixel(i,j, media);
         }
 
-    /*for(int i = x1; i < x2; i++){
-      for (int j = y1 ; j < y2; j++){
-        if(i%2 == 0)
-          imagen.asigna_pixel(i, j, imagenOriginal.valor_pixel(i,j));                             // Asignamos la casilla de la izquierda
-        else
-          imagen.asigna_pixel(i+2, j, imagenOriginal.valor_pixel(i,j));                             // Asignamos la casilla de la izquierda
-        if(j+1 < y2){
-          media = (imagenOriginal.valor_pixel(i,j) + imagenOriginal.valor_pixel(i,j+1)) / 2;      // Calculamos la media de una casilla y la siguiente
-          imagen.asigna_pixel(i, j+1, media);                                                   // Asignamos la casilla de la media
-        }
-
-      }
-
-      //COMPROBAR LA INVENTADA DEL SIGLO OTRO DÍA
-      for(int j = y1; j < y2; j++){
-        for (int i = x1 ; i < x2; i++){
-          media = (imagenOriginal.valor_pixel(i,j) + imagenOriginal.valor_pixel(i+1,j)) / 2;    // Calculamos la media de una casilla y la siguiente
-          if(i%2 == 0)
-            imagen.asigna_pixel(i, j, imagenOriginal.valor_pixel(i,j));                           // Asignamos la casilla de la izquierda
-          else
-            imagen.asigna_pixel(i, j+2, imagenOriginal.valor_pixel(i,j));
-          if(i+1 < x2)
-            imagen.asigna_pixel(i+1, j, media);                                                 // Asignamos la casilla de la media
-        }*/
-
       conversorImagenVector(imagen, vFinal);
       okay = escribirVector(tipo, fout, newF, newC);
 
