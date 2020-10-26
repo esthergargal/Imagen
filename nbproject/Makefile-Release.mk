@@ -35,9 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/imagenES.o \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/negativo.o
+	${OBJECTDIR}/src/imagenES.o \
+	${OBJECTDIR}/src/negativo.o
 
 
 # C Compiler Flags
@@ -64,20 +63,15 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/imagen.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/imagen ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/imagenES.o: imagenES.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/imagenES.o: src/imagenES.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/imagenES.o imagenES.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/imagenES.o src/imagenES.cpp
 
-${OBJECTDIR}/main.o: main.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/negativo.o: src/negativo.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
-
-${OBJECTDIR}/negativo.o: negativo.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/negativo.o negativo.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/negativo.o src/negativo.cpp
 
 # Subprojects
 .build-subprojects:
