@@ -89,7 +89,7 @@ void errorBreak(int errorcode, const string &errordata) {
     exit(1);
 }
 
-byte leerVector(TipoImagen tipo, const string fin, int &f, int &c){
+byte *leerVector(TipoImagen tipo, const string fin, int &f, int &c){
     byte *img;
 
     if (tipo == TipoImagen::IMG_PGM) {
@@ -228,7 +228,7 @@ bool zoom(string fin, string& fout, int x1, int y1, int x2, int y2){
         }
 
       conversorImagenVector(imagen, vFinal);
-      okay = escribirVector(tipo, fout, newF, newC);
+      okay = escribirVector(tipo, fout, newF, newC, vFinal);
 
     return okay;
 }
@@ -238,23 +238,56 @@ bool zoom(string fin, string& fout, int x1, int y1, int x2, int y2){
 bool icono(string forig, string& frdo, int nf, int nc){
     bool okay;
     byte *vOriginal, *vFinal;
-    int f, c, relacion;
+    int f, c, rel, cont;
     double media = 0;
 
-    f = c = relacion = 0;
+    f = c = rel = cont = 0;
     
-    TipoImagen tipo = LeerTipoImagen(fin.c_str());
-    vOriginal = leerVector(tipo, fin, f, c);                                    // Guardamos la imagen en un vector
+    TipoImagen tipo = LeerTipoImagen(forig.c_str());
+    vOriginal = leerVector(tipo, forig, f, c);                                  // Guardamos la imagen en un vector
 
-    Imagen imagenOriginal;
+    Imagen imagenOriginal, icono(nf,nc);                                        // Creamos la imagen original y el icono
     conversorVectorImagen(vOriginal, imagenOriginal);                           // Convertimos el vector a imagen para trabajar con ella
     
-    relacion = ceil((f*c) / (nf*nc));                                           // Relación de aspecto
+    if(f%nf == 0)                                                               // Si 
+        rel = f/nf;
+    else
+        rel = ceil(f/nf);
     
-    /*for (int i = 0; i < f; i++)
-        for (int j=0; j<c; j++)
-           COMPLETAR */
+    /*for(int k = 0; k < nf; k++){                                                // Recorrer el icono si es divisible
+        for (int z = 0; z < nc; z++){
+            for(int i = 0 ; i < rel; i++){
+                for (int j = 0; j < rel; j++){
+                    media += imagenOriginal.valor_pixel(i+ k*rel, j+ z*rel);
+                }
+            }
+            icono.asigna_pixel(k, z, media/(rel*rel));
+            media = 0;
+        }        
+    }         */         
     
+    for(int k = 0; k < nf; k++){                                                // Recorrer el icono
+        for (int z = 0; z < nc; z++){
+            for(int i = 0 ; i < rel; i++){
+                for (int j = 0; j < rel; j++){
+                    if(j + z*rel > imagenOriginal.num_cols())
+                        media += imagenOriginal.valor_pixel(i+ k*rel, j+ z*rel-1);
+                    else if (i+ k*rel > imagenOriginal.num_cols())
+                            media += imagenOriginal.valor_pixel(i+ k*rel -1, j+ z*rel);
+                    else
+                        media += imagenOriginal.valor_pixel(i+ k*rel, j+ z*rel);
+                }
+            }
+            icono.asigna_pixel(k, z, ceil(media/(rel*rel)));
+            media = 0;
+        }        
+    }
+        
+
+    conversorImagenVector(icono, vFinal);
+    okay = escribirVector(tipo, frdo, nf, nc, vFinal);
+    
+    return okay;
 }
 
 //--------------------------------EJERCICIO 5---------------------------------//
@@ -268,7 +301,7 @@ bool aumentarConstraste(string fichE, string& fichS, const int min, const int ma
     
     f = c = 0;
     
-    TipoImagen tipo = LeerTipoImagen(fin.c_str());
+    TipoImagen tipo = LeerTipoImagen(fichE.c_str());
     vOriginal = leerVector(tipo, fichE, f, c);                                  // Guardamos la imagen en un vector
 
     Imagen imagen;
@@ -290,7 +323,7 @@ bool aumentarConstraste(string fichE, string& fichS, const int min, const int ma
             imagen.asigna_pixel(f,c, transformacion(min, cte, rmin, imagen.valor_pixel(f,c)));
     
     conversorImagenVector(imagen, vFinal);
-    okay = escribirVector(tipo, fichS, f, c);
+    okay = escribirVector(tipo, fichS, f, c, vFinal);
     
     return okay;
 }

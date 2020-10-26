@@ -114,7 +114,7 @@ Imagen conversorVectorImagen(byte *v, Imagen &imagen);
  */
 byte conversorImagenVector(const Imagen &imagen, byte *v);
 
-byte leerVector(TipoImagen tipo, const std::string fin, int &f, int &c);
+byte *leerVector(TipoImagen tipo, const std::string fin, int &f, int &c);
 
 bool escribirVector(TipoImagen tipo, std::string& fout, const int f, const int c, byte *img);
 
