@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/src/Imagen.o \
 	${OBJECTDIR}/src/imagenES.o \
 	${OBJECTDIR}/src/negativo.o
 
@@ -62,6 +63,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/imagen.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/imagen ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/src/Imagen.o: src/Imagen.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Imagen.o src/Imagen.cpp
 
 ${OBJECTDIR}/src/imagenES.o: src/imagenES.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
