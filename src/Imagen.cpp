@@ -270,10 +270,13 @@ bool icono(string forig, string& frdo, int nf, int nc){
         for (int z = 0; z < nc; z++){
             for(int i = 0 ; i < rel; i++){
                 for (int j = 0; j < rel; j++){
-                    if(j + z*rel > imagenOriginal.num_cols())
-                        media += imagenOriginal.valor_pixel(i+ k*rel, j+ z*rel-1);
-                    else if (i+ k*rel > imagenOriginal.num_cols())
+                    if(j + z*rel > imagenOriginal.num_cols() || i+ k*rel > imagenOriginal.num_filas())
+                        if(j + z*rel > imagenOriginal.num_cols())
+                            media += imagenOriginal.valor_pixel(i+ k*rel, j+ z*rel-1);
+                        else if (i+ k*rel > imagenOriginal.num_filas())
                             media += imagenOriginal.valor_pixel(i+ k*rel -1, j+ z*rel);
+                        else
+                            media += imagenOriginal.valor_pixel(i+ k*rel -1, j+ z*rel -1);
                     else
                         media += imagenOriginal.valor_pixel(i+ k*rel, j+ z*rel);
                 }
