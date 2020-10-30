@@ -238,33 +238,21 @@ bool zoom(string fin, string& fout, int x1, int y1, int x2, int y2){
 bool icono(string forig, string& frdo, int nf, int nc){
     bool okay;
     byte *vOriginal, *vFinal;
-    int f, c, rel, cont;
+    int f, c, rel;
     double media = 0;
 
-    f = c = rel = cont = 0;
+    f = c = rel = 0;
     
     TipoImagen tipo = LeerTipoImagen(forig.c_str());
     vOriginal = leerVector(tipo, forig, f, c);                                  // Guardamos la imagen en un vector
 
-    Imagen imagenOriginal, icono(nf,nc);                                        // Creamos la imagen original y el icono
+    Imagen imagenOriginal(f,c), icono(nf,nc);                                   // Creamos la imagen original y el icono
     conversorVectorImagen(vOriginal, imagenOriginal);                           // Convertimos el vector a imagen para trabajar con ella
     
-    if(f%nf == 0)                                                               // Si 
-        rel = f/nf;
+    if(f/nf > c/nc)
+        rel = ceil(f/nf);                                                           // Si es par, va a dar exacto
     else
-        rel = ceil(f/nf);
-    
-    /*for(int k = 0; k < nf; k++){                                                // Recorrer el icono si es divisible
-        for (int z = 0; z < nc; z++){
-            for(int i = 0 ; i < rel; i++){
-                for (int j = 0; j < rel; j++){
-                    media += imagenOriginal.valor_pixel(i+ k*rel, j+ z*rel);
-                }
-            }
-            icono.asigna_pixel(k, z, media/(rel*rel));
-            media = 0;
-        }        
-    }         */         
+        rel = ceil(c/nc);
     
     for(int k = 0; k < nf; k++){                                                // Recorrer el icono
         for (int z = 0; z < nc; z++){
@@ -307,7 +295,7 @@ bool aumentarConstraste(string fichE, string& fichS, const int min, const int ma
     TipoImagen tipo = LeerTipoImagen(fichE.c_str());
     vOriginal = leerVector(tipo, fichE, f, c);                                  // Guardamos la imagen en un vector
 
-    Imagen imagen;
+    Imagen imagen(f,c);
     conversorVectorImagen(vOriginal, imagen); 
     rmax = rmin = imagen.valor_pixel(0,0);                                      // Inicializamos el valor de los niveles de grises
     
