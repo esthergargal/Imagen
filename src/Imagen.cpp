@@ -249,8 +249,8 @@ bool icono(string forig, string& frdo, int nf, int nc){
     Imagen imagenOriginal(f,c), icono(nf,nc);                                   // Creamos la imagen original y el icono
     conversorVectorImagen(vOriginal, imagenOriginal);                           // Convertimos el vector a imagen para trabajar con ella
     
-    if(f/nf > c/nc)
-        rel = ceil(f/nf);                                                           // Si es par, va a dar exacto
+    if(f/nf < c/nc)
+        rel = ceil(f/nf);                                                       // Si es par, va a dar exacto
     else
         rel = ceil(c/nc);
     
