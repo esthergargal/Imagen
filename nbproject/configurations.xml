@@ -16,6 +16,7 @@
                    projectFiles="true">
       <itemPath>src/Imagen.cpp</itemPath>
       <itemPath>src/imagenES.cpp</itemPath>
+      <itemPath>include/main.cpp</itemPath>
       <itemPath>src/negativo.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -53,6 +54,8 @@
       </item>
       <item path="include/imagenES.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="include/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Imagen.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/imagenES.cpp" ex="false" tool="1" flavor2="0">
@@ -83,6 +86,8 @@
       <item path="include/Imagen.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/imagenES.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Imagen.cpp" ex="false" tool="1" flavor2="0">
       </item>
