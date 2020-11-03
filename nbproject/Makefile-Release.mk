@@ -37,8 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/include/main.o \
 	${OBJECTDIR}/src/Imagen.o \
-	${OBJECTDIR}/src/imagenES.o \
-	${OBJECTDIR}/src/negativo.o
+	${OBJECTDIR}/src/imagenES.o
 
 
 # C Compiler Flags
@@ -79,11 +78,6 @@ ${OBJECTDIR}/src/imagenES.o: src/imagenES.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/imagenES.o src/imagenES.cpp
-
-${OBJECTDIR}/src/negativo.o: src/negativo.cpp
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/negativo.o src/negativo.cpp
 
 # Subprojects
 .build-subprojects:

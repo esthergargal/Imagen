@@ -17,7 +17,6 @@
       <itemPath>src/Imagen.cpp</itemPath>
       <itemPath>src/imagenES.cpp</itemPath>
       <itemPath>include/main.cpp</itemPath>
-      <itemPath>src/negativo.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -91,8 +90,6 @@
       <item path="src/Imagen.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/imagenES.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/negativo.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

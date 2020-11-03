@@ -93,7 +93,7 @@ Imagen& Imagen::operator=(const Imagen& i){  // Operador de asignacion
 
 //----------------------------------MÉTODOS-----------------------------------//
 
-void Imagen::asigna_pixel (int fila, int col, byte valor){
+void Imagen::asigna_pixel (int fila, int col, int valor){
     assert( (fila >= 0 && fila < filas) && (col < cols && col >= 0) );
     img[fila][col] = valor;
 }

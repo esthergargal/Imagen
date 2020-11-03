@@ -81,7 +81,7 @@
        * @param fila indice de fila
        * @param col indice de columna
        */
-       void asigna_pixel (int fila, int col, byte valor);
+       void asigna_pixel (int fila, int col, int valor);
 
        /**
        * @brief el byte correspondiente a esa zona

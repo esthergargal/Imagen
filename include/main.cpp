@@ -27,12 +27,8 @@
 
 using namespace std;
 
- /**
- * @brief Reporta un error importante y termina el programa
- * @param errorcode Código del error detectado correspondiente a ERROR_UNKNOWN y ERROR_OPEN
- * @param errordata Información adicional sobre el error (si no está relacionado con un fichero, se deja un string vacío)
- */
-void errorBreak(int errorcode, const std::string &errordata);
+
+//----------------------------------AUXILIARES---------------------------------//
 
 /**
  * @brief Función auxiliar para convertir un vector en una Imagen
@@ -40,137 +36,6 @@ void errorBreak(int errorcode, const std::string &errordata);
  * @param imagen La imagen resultante
  * @return imagen La imagen resultante
  */
-Imagen conversorVectorImagen(byte *v, Imagen &imagen);
-
-/**
- * @brief Función auxiliar para convertir una Imagen en un vector
- * @param imagen La imagen a convertir
- * @param v El vector resultante
- * @return v El vector resultante
- */
-byte conversorImagenVector(const Imagen &imagen, byte *v);
-
-byte *leerVector(TipoImagen tipo, const std::string fin, int &f, int &c);
-
-bool escribirVector(TipoImagen tipo, std::string& fout, const int f, const int c, byte *img);
-
-byte transformacion(double min, double constante, double rmin, double nivelOriginal);
-
-/**
- * @brief Función que permite umbralizar una Imagen
- * @param fin Nombre del fichero de entrada
- * @param fout Nombre del fichero de salida
- * @param T_1 Umbral mínimo
- * @param T_2 Umbral máximo
- * @precond T_1 < T_2
- * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
- */
-bool umbralizar(std::string fin, std::string& fout, int T_1, int T_2);
-
-/**
- * @brief Función que permite aumentar el tamaño de una porción de la Imagen
- * @param fin Nombre del fichero de entrada
- * @param fout Nombre del fichero de salida
- * @param x1 Coordenada x de la esquina superior izquierda
- * @param y1 Coordenada y de la esquina superior izquierda
- * @param x2 Coordenada x de la esquina inferior derecha
- * @param y2 Coordenada y de la esquina inferior derecha
- * @precond Debe ser un trozo cuadrado
- * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
- */
-bool zoom(std::string fin, std::string fout, int x1, int y1, int x2, int y2);
-
-/**
- * @brief Función que permite disminuir el tamaño de una porción de la Imagen
- * @param forig Nombre del fichero de entrada
- * @param frdo Nombre del fichero de salida
- * @param nf Número de filas del icono
- * @param nc Número de columnas del icono
- * @precond Debe ser un trozo cuadrado
- * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
- */
-bool icono(std::string forig, std::string& frdo, int nf, int nc);
-
-/**
- * @brief Función que permite aumentar el contraste de la Imagen
- * @param fichE Nombre del fichero de entrada
- * @param fichS Nombre del fichero de salida
- * @param min 
- * @param max 
- * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
- */
-bool aumentarContraste(string fichE, string& fichS, const int min, const int max);
-
-/*
- * 
- */
-int main(int argc, char** argv) {
-    
-    string nentrada, nsalida;
-    bool correcto;
-    int op = 0, f = 0, c = 0, f2 = 0, c2 = 0, i = 1;
-    
-    if(argc != 2)
-        errorBreak(3,"");
-    else{
-        nentrada = argv[1];
-    }
-    
-    do{
-    cout << "Elija una opción (-1 para terminar): " << endl;
-    cout << "[1] Umbralizar" << endl;
-    cout << "[2] Zoom" << endl;
-    cout << "[3] Icono" << endl;
-    cout << "[4] Aumentar contraste" << endl;
-    cin >> op;
-    
-    nsalida = nentrada + to_string(i);
-    switch (op){
-        
-        case 1:
-            cout << endl << "Ejercicio 1: UMBRALIZAR" << "\nInserte un umbral mínimo y máximo:"<< endl;
-            cin >> f >> c;
-            correcto = umbralizar(nentrada, nsalida, f, c);
-    
-            if(!correcto)
-                errorBreak(4,"umbralizar");
-            break;
-        case 2: 
-            cout << endl << "Ejercicio 2: ZOOM" << "\nInserte las coordenadas iniciales:" << endl;
-            cin >> f >> c;
-            cout << "\nInserte las coordenadas finales:" << endl;
-            cin >> f2 >> c2;
-            correcto = zoom(nentrada, nsalida, f, c, f2, c2);
-
-            if (!correcto)
-                errorBreak(4, "zoom");
-            break;
-        case 3: 
-            cout << "\nEjercicio 3: ICONO" << "\nInserte un número de filas y columnas para el icono (debe ser cuadrado):" << endl;
-            cin >> f >> c;
-            correcto = icono(nentrada, nsalida, f, c);
-
-            if (!correcto)
-                errorBreak(4, "icono");
-            break;
-        case 4: 
-            cout << endl << "Ejercicio 4: AUMENTAR CONTRASTE" << "\nInserte un mínimo y un máximo:" << endl;
-            cin >> f >> c;
-            correcto = aumentarContraste(nentrada, nsalida, f, c);
-
-            if (!correcto)
-                errorBreak(4, "aumentar contraste");
-            break;
-    }
-    
-    i++;
-    } while (op != -1);
-       
-    return 0;
-}
-
-
-//----------------------------------AUXILIARES---------------------------------//
 Imagen conversorVectorImagen(byte *v, Imagen &imagen) {
     for (int f = 0; f < imagen.num_cols(); f++)
         for (int c = 0; c < imagen.num_filas(); c++)
@@ -179,6 +44,12 @@ Imagen conversorVectorImagen(byte *v, Imagen &imagen) {
     return imagen;
 }
 
+/**
+ * @brief Función auxiliar para convertir una Imagen en un vector
+ * @param imagen La imagen a convertir
+ * @param v El vector resultante
+ * @return v El vector resultante
+ */
 byte conversorImagenVector(const Imagen &imagen, byte *v){
     for (int f = 0; f < imagen.num_cols(); f++)
         for (int c = 0; c < imagen.num_filas(); c++)
@@ -187,6 +58,11 @@ byte conversorImagenVector(const Imagen &imagen, byte *v){
     return *v;
 }
 
+ /**
+ * @brief Reporta un error importante y termina el programa
+ * @param errorcode Código del error detectado correspondiente a ERROR_UNKNOWN y ERROR_OPEN
+ * @param errordata Información adicional sobre el error (si no está relacionado con un fichero, se deja un string vacío)
+ */
 void errorBreak(int errorcode, const string &errordata) {
     cerr << endl << "%%%OUTPUT" << endl;
     switch(errorcode) {
@@ -206,7 +82,7 @@ void errorBreak(int errorcode, const string &errordata) {
     exit(1);
 }
 
-byte *leerVector(TipoImagen tipo, const string fin, int &f, int &c){
+byte *leerVector(TipoImagen tipo, const char *fin, int &f, int &c){
     byte *img;
 
     if (tipo == TipoImagen::IMG_PGM) {
@@ -219,13 +95,13 @@ byte *leerVector(TipoImagen tipo, const string fin, int &f, int &c){
     return img;
 }
 
-bool escribirVector(TipoImagen tipo, string& fout, const int f, const int c, byte *img){
+bool escribirVector(TipoImagen tipo, char& *fout, const int f, const int c, byte *img){
     bool okay;
 
     if (tipo == TipoImagen::IMG_PGM)
-        okay = EscribirImagenPPM(fout.c_str(), img, f, c);
+        okay = EscribirImagenPPM(fout, img, f, c);
     else
-        okay = EscribirImagenPGM(fout.c_str(), img, f, c);
+        okay = EscribirImagenPGM(fout, img, f, c);
 
     return okay;
 }
@@ -238,31 +114,35 @@ byte transformacion(double min, double constante, double rmin, double nivelOrigi
     
     return byteF;
 }
+
+
 //--------------------------------EJERCICIO 1---------------------------------//
 
-bool umbralizar(string fin, string fout, int T_1, int T_2) {
+/**
+ * @brief Función que permite umbralizar una Imagen
+ * @param fin Nombre del fichero de entrada
+ * @param fout Nombre del fichero de salida
+ * @param T_1 Umbral mínimo
+ * @param T_2 Umbral máximo
+ * @precond T_1 < T_2
+ * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
+ */
+
+bool umbralizar(const char *fin, const char *fout, int T_1, int T_2) {
     // hay que abrir ficheros me cago en satanas
     bool okay;
     byte *img;
-    Imagen imagen;
-    int f = 0, c = 0;
-
-    if (T_1 < 0)
-        T_1 = 0;
-    if (T_2 > 255)
-        T_2 = 255;
-    TipoImagen tipo = LeerTipoImagen(fin.c_str());
-
+    int f = 0, c = 0, pixel = 0;
+    
+    TipoImagen tipo = LeerTipoImagen(fin);
     img = leerVector(tipo, fin, f, c);                                          // Si el formato es desconocido, se termina la ejecución
-    conversorVectorImagen(img, imagen);                                         // Como nos devuelven un vector, necesitamos tenerlo en formato matriz
-
-    for (int i = 0; i < f; i++)                                                 // Umbralizamos según T_1 y T_2
-        for (int j = 0; j < c; j++) {
-            if (imagen.valor_pixel(i,j) <= T_1 || imagen.valor_pixel(i,j) >= T_2)
-                imagen.asigna_pixel(i, j, 255);                                 // Si está dentro del umbral no se hace nada
+    
+    for (int i = 0; i < f*c; i++){                                                // Umbralizamos según T_1 y T_2
+            pixel = img[i];
+            if ( pixel <= T_1 || pixel >= T_2)
+                img[i] = 255;                                 // Si está dentro del umbral no se hace nada
         }
-
-    conversorImagenVector(imagen, img);                                         // Volvemos a copiar la imagen ya umbralizada
+    
     okay = escribirVector(tipo, fout, f, c, img);
 
     return okay;
@@ -270,7 +150,18 @@ bool umbralizar(string fin, string fout, int T_1, int T_2) {
 
 //--------------------------------EJERCICIO 3---------------------------------//
 
-bool zoom(string fin, string& fout, int x1, int y1, int x2, int y2){
+/**
+ * @brief Función que permite aumentar el tamaño de una porción de la Imagen
+ * @param fin Nombre del fichero de entrada
+ * @param fout Nombre del fichero de salida
+ * @param x1 Coordenada x de la esquina superior izquierda
+ * @param y1 Coordenada y de la esquina superior izquierda
+ * @param x2 Coordenada x de la esquina inferior derecha
+ * @param y2 Coordenada y de la esquina inferior derecha
+ * @precond Debe ser un trozo cuadrado
+ * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
+ */
+bool zoom(const char *fin, char& *fout, int x1, int y1, int x2, int y2){
 
     bool okay;
     byte *vOriginal, *vFinal;
@@ -280,7 +171,7 @@ bool zoom(string fin, string& fout, int x1, int y1, int x2, int y2){
     TipoImagen tipo = LeerTipoImagen(fin.c_str());
     vOriginal = leerVector(tipo, fin, f, c);
 
-    Imagen imagenOriginal;
+    Imagen imagenOriginal(f,c);
     conversorVectorImagen(vOriginal, imagenOriginal);
 
     newF = x2 - x1;
@@ -311,7 +202,17 @@ bool zoom(string fin, string& fout, int x1, int y1, int x2, int y2){
 
 //--------------------------------EJERCICIO 4---------------------------------//
 
-bool icono(string forig, string& frdo, int nf, int nc){
+/**
+ * @brief Función que permite disminuir el tamaño de una porción de la Imagen
+ * @param forig Nombre del fichero de entrada
+ * @param frdo Nombre del fichero de salida
+ * @param nf Número de filas del icono
+ * @param nc Número de columnas del icono
+ * @precond Debe ser un trozo cuadrado
+ * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
+ */
+
+bool icono(const char *forig, char& *frdo, int nf, int nc){
     bool okay;
     byte *vOriginal, *vFinal;
     int f, c, rel;
@@ -359,7 +260,16 @@ bool icono(string forig, string& frdo, int nf, int nc){
 
 //--------------------------------EJERCICIO 5---------------------------------//
 
-bool aumentarContraste(string fichE, string& fichS, const int min, const int max){
+/**
+ * @brief Función que permite aumentar el contraste de la Imagen
+ * @param fichE Nombre del fichero de entrada
+ * @param fichS Nombre del fichero de salida
+ * @param min 
+ * @param max 
+ * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
+ */
+
+bool aumentarContraste(const char *fichE, char& *fichS, const int min, const int max){
     
     bool okay;
     byte *vOriginal, *vFinal;
@@ -393,4 +303,75 @@ bool aumentarContraste(string fichE, string& fichS, const int min, const int max
     okay = escribirVector(tipo, fichS, f, c, vFinal);
     
     return okay;
+}
+
+/*
+ * @brief Main program
+ */
+int main(int argc, char** argv) {
+    
+    char *nentrada, *nsalida;
+    bool correcto;
+    int op = 0, f = 0, c = 0, f2 = 0, c2 = 0, i = 0;
+    
+    if(argc != 3)
+        errorBreak(3,"");
+    else{
+        nentrada = argv[1];
+        nsalida = argv[2];
+    }
+    
+    
+    do{
+    nsalida.erase(nsalida.size()-4-i, 4+i);                                     // Le quitamos la extensión
+    cout << "Elija una opción (-1 para terminar): " << endl;
+    cout << "[1] Umbralizar" << endl;
+    cout << "[2] Zoom" << endl;
+    cout << "[3] Icono" << endl;
+    cout << "[4] Aumentar contraste" << endl;
+    cin >> op;
+    
+    nsalida += to_string(i) + ".pgm";
+    switch (op){
+        
+        case 1:
+            cout << endl << "Ejercicio 1: UMBRALIZAR" << "\nInserte un umbral mínimo y máximo:"<< endl;
+            cin >> f >> c;
+            correcto = umbralizar(nentrada, nsalida, f, c);
+    
+            if(!correcto)
+                errorBreak(4,"umbralizar");
+            break;
+        case 2: 
+            cout << endl << "Ejercicio 2: ZOOM" << "\nInserte las coordenadas iniciales:" << endl;
+            cin >> f >> c;
+            cout << "\nInserte las coordenadas finales:" << endl;
+            cin >> f2 >> c2;
+            correcto = zoom(nentrada, nsalida, f, c, f2, c2);
+
+            if (!correcto)
+                errorBreak(4, "zoom");
+            break;
+        case 3: 
+            cout << "\nEjercicio 3: ICONO" << "\nInserte un número de filas y columnas para el icono (debe ser cuadrado):" << endl;
+            cin >> f >> c;
+            correcto = icono(nentrada, nsalida, f, c);
+
+            if (!correcto)
+                errorBreak(4, "icono");
+            break;
+        case 4: 
+            cout << endl << "Ejercicio 4: AUMENTAR CONTRASTE" << "\nInserte un mínimo y un máximo:" << endl;
+            cin >> f >> c;
+            correcto = aumentarContraste(nentrada, nsalida, f, c);
+
+            if (!correcto)
+                errorBreak(4, "aumentar contraste");
+            break;
+    }
+    
+    i++;
+    } while (op != -1);
+       
+    return 0;
 }
