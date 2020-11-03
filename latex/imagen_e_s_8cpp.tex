@@ -1,0 +1,43 @@
+\hypertarget{imagen_e_s_8cpp}{}\doxysection{src/imagen\+ES.cpp File Reference}
+\label{imagen_e_s_8cpp}\index{src/imagenES.cpp@{src/imagenES.cpp}}
+
+
+Fichero con definiciones para la E/S de imágenes.  
+
+
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$imagen\+E\+S.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{imagen_e_s_8cpp_a16834dd3756f7baf1e5ef710ad7b0e3b}\label{imagen_e_s_8cpp_a16834dd3756f7baf1e5ef710ad7b0e3b}} 
+Tipo\+Imagen {\bfseries Leer\+Tipo} (ifstream \&f)
+\item 
+\mbox{\Hypertarget{imagen_e_s_8cpp_acaa5fb277940aceed29f86c093a3d89c}\label{imagen_e_s_8cpp_acaa5fb277940aceed29f86c093a3d89c}} 
+Tipo\+Imagen {\bfseries Leer\+Tipo\+Imagen} (const char $\ast$nombre)
+\item 
+\mbox{\Hypertarget{imagen_e_s_8cpp_ab090ad072f47dc1ffcfcb900c3334936}\label{imagen_e_s_8cpp_ab090ad072f47dc1ffcfcb900c3334936}} 
+char {\bfseries Saltar\+Separadores} (ifstream \&f)
+\item 
+\mbox{\Hypertarget{imagen_e_s_8cpp_a0e193b2477b18f021255d69362992859}\label{imagen_e_s_8cpp_a0e193b2477b18f021255d69362992859}} 
+bool {\bfseries Leer\+Cabecera} (ifstream \&f, int \&fils, int \&cols)
+\item 
+\mbox{\Hypertarget{imagen_e_s_8cpp_a05aea20533de5bbd02789f76aafbb99b}\label{imagen_e_s_8cpp_a05aea20533de5bbd02789f76aafbb99b}} 
+unsigned char $\ast$ {\bfseries Leer\+Imagen\+P\+PM} (const char $\ast$nombre, int \&fils, int \&cols)
+\item 
+\mbox{\Hypertarget{imagen_e_s_8cpp_a03340a1e1e4a88385c972bb4af463649}\label{imagen_e_s_8cpp_a03340a1e1e4a88385c972bb4af463649}} 
+unsigned char $\ast$ {\bfseries Leer\+Imagen\+P\+GM} (const char $\ast$nombre, int \&fils, int \&cols)
+\item 
+\mbox{\Hypertarget{imagen_e_s_8cpp_ae149be8653b9f8c7321ac40577e7518c}\label{imagen_e_s_8cpp_ae149be8653b9f8c7321ac40577e7518c}} 
+bool {\bfseries Escribir\+Imagen\+P\+PM} (const char $\ast$nombre, const unsigned char $\ast$datos, const int fils, const int cols)
+\item 
+\mbox{\Hypertarget{imagen_e_s_8cpp_a4b649cc272f02649563791d5ed75b557}\label{imagen_e_s_8cpp_a4b649cc272f02649563791d5ed75b557}} 
+bool {\bfseries Escribir\+Imagen\+P\+GM} (const char $\ast$nombre, const unsigned char $\ast$datos, const int fils, const int cols)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Fichero con definiciones para la E/S de imágenes. 
+
+Permite la E/S de archivos de tipo P\+GM,P\+PM 

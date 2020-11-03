@@ -13,8 +13,6 @@
         <gdb_interceptlist>
           <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
         </gdb_interceptlist>
-        <gdb_signals>
-        </gdb_signals>
         <gdb_options>
           <DebugOptions>
           </DebugOptions>
@@ -32,8 +30,9 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" imagenespgmppm/cameraman imagenespgmppm/cameraman1
 </runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" imagenespgmppm/cameraman.pgm imagenespgmppm/cameraman.pgm</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" imagenespgmppm/cameraman.pgm C:\Users\Esther\Dropbox\UNIVERSIDAD/cameraman.pgm</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" imagenespgmppm/cameraman.pgm imagenespgmppm/cameraman.pgm</runcommand>
+        <runcommand>"${OUTPUT_PATH}" imagenespgmppm/cameraman.pgm C:\Users\Esther\Dropbox\UNIVERSIDAD/cameraman.pgm</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

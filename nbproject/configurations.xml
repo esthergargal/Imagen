@@ -14,9 +14,11 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>src/Imagen.cpp</itemPath>
-      <itemPath>src/imagenES.cpp</itemPath>
-      <itemPath>include/main.cpp</itemPath>
+      <logicalFolder name="src" displayName="src" projectFiles="true">
+        <itemPath>src/Imagen.cpp</itemPath>
+        <itemPath>src/imagenES.cpp</itemPath>
+        <itemPath>src/main.cpp</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -27,7 +29,7 @@
                    displayName="Important Files"
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
-      <itemPath>Makefile</itemPath>
+      <itemPath>../../../../../Dropbox/UNIVERSIDAD/PDOO/prueba/Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -54,11 +56,11 @@
       </item>
       <item path="include/imagenES.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="include/main.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="src/Imagen.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/imagenES.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -85,11 +87,11 @@
       </item>
       <item path="include/imagenES.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="include/main.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="src/Imagen.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/imagenES.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

@@ -51,9 +51,10 @@ Imagen conversorVectorImagen(byte *v, Imagen &imagen) {
  * @return v El vector resultante
  */
 byte conversorImagenVector(const Imagen &imagen, byte *v){
-    for (int f = 0; f < imagen.num_cols(); f++)
-        for (int c = 0; c < imagen.num_filas(); c++)
+    for (int f = 0; f < imagen.num_filas(); f++)
+        for (int c = 0; c < imagen.num_cols(); c++){
             v[f+c] = imagen.valor_pixel(f,c);
+        }
 
     return *v;
 }
@@ -86,22 +87,22 @@ byte *leerVector(TipoImagen tipo, const char *fin, int &f, int &c){
     byte *img;
 
     if (tipo == TipoImagen::IMG_PGM) {
-        img = LeerImagenPGM(fin.c_str(), f, c);                                // Devuelve un vector
+        img = LeerImagenPGM(fin, f, c);                                // Devuelve un vector
     } else if (tipo == TipoImagen::IMG_PPM) {
-        img = LeerImagenPPM(fin.c_str(), f, c);                                // Devuelve un vector
+        img = LeerImagenPPM(fin, f, c);                                // Devuelve un vector
     } else
         errorBreak(1,"");
 
     return img;
 }
 
-bool escribirVector(TipoImagen tipo, char& *fout, const int f, const int c, byte *img){
+bool escribirVector(TipoImagen tipo, const char *fout, const int f, const int c, byte *img){
     bool okay;
 
     if (tipo == TipoImagen::IMG_PGM)
-        okay = EscribirImagenPPM(fout, img, f, c);
-    else
         okay = EscribirImagenPGM(fout, img, f, c);
+    else
+        okay = EscribirImagenPPM(fout, img, f, c);
 
     return okay;
 }
@@ -129,7 +130,6 @@ byte transformacion(double min, double constante, double rmin, double nivelOrigi
  */
 
 bool umbralizar(const char *fin, const char *fout, int T_1, int T_2) {
-    // hay que abrir ficheros me cago en satanas
     bool okay;
     byte *img;
     int f = 0, c = 0, pixel = 0;
@@ -161,14 +161,14 @@ bool umbralizar(const char *fin, const char *fout, int T_1, int T_2) {
  * @precond Debe ser un trozo cuadrado
  * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
  */
-bool zoom(const char *fin, char& *fout, int x1, int y1, int x2, int y2){
+bool zoom(const char *fin, const char *fout, int x1, int y1, int x2, int y2){
 
     bool okay;
-    byte *vOriginal, *vFinal;
+    byte *vOriginal;
     int f = 0, c = 0, newF = 0, newC = 0;
     double media = 0;
 
-    TipoImagen tipo = LeerTipoImagen(fin.c_str());
+    TipoImagen tipo = LeerTipoImagen(fin);
     vOriginal = leerVector(tipo, fin, f, c);
 
     Imagen imagenOriginal(f,c);
@@ -182,21 +182,22 @@ bool zoom(const char *fin, char& *fout, int x1, int y1, int x2, int y2){
       for(int j = 0; j < newF; j++)
         imagen.asigna_pixel(2*i, 2*j, imagenOriginal.valor_pixel(y1 + i, x1 + j));
 
-    for(int i = 0; imagen.num_filas(); i+2)
-      for(int j = 1; j < imagen.num_cols(); j+2){
-        media = (imagen.valor_pixel(i,j-1) + imagen.valor_pixel(i, j+1))/ 2;
+    for(int i = 0; i < imagen.num_filas(); i+=2)
+      for(int j = 1; j < imagen.num_cols(); j+=2){
+        media = (imagen.valor_pixel(i,j-1) + imagen.valor_pixel(i, j+1))/2;
         imagen.asigna_pixel(i,j, media);
       }
 
-      for(int i = 1; imagen.num_filas(); i+2)
-        for(int j = 0; j < imagen.num_filas(); j++){
-          media = (imagen.valor_pixel(i-1,j) + imagen.valor_pixel(i+1,j))/ 2;
+      for(int i = 1; i < imagen.num_filas(); i+=2)
+        for(int j = 0; j < imagen.num_cols(); j++){
+          media = (imagen.valor_pixel(i-1,j) + imagen.valor_pixel(i+1,j))/2;
           imagen.asigna_pixel(i,j, media);
         }
-
+    
+      byte *vFinal = new unsigned char [imagen.num_filas()*imagen.num_cols()];
       conversorImagenVector(imagen, vFinal);
       okay = escribirVector(tipo, fout, newF, newC, vFinal);
-
+      //liberar memoria??????
     return okay;
 }
 
@@ -212,15 +213,15 @@ bool zoom(const char *fin, char& *fout, int x1, int y1, int x2, int y2){
  * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
  */
 
-bool icono(const char *forig, char& *frdo, int nf, int nc){
+bool icono(const char *forig, const char *frdo, int nf, int nc){
     bool okay;
-    byte *vOriginal, *vFinal;
+    byte *vOriginal;
     int f, c, rel;
     double media = 0;
 
     f = c = rel = 0;
     
-    TipoImagen tipo = LeerTipoImagen(forig.c_str());
+    TipoImagen tipo = LeerTipoImagen(forig);
     vOriginal = leerVector(tipo, forig, f, c);                                  // Guardamos la imagen en un vector
 
     Imagen imagenOriginal(f,c), icono(nf,nc);                                   // Creamos la imagen original y el icono
@@ -250,11 +251,12 @@ bool icono(const char *forig, char& *frdo, int nf, int nc){
             media = 0;
         }        
     }
-        
-
+    
+    byte *vFinal = new unsigned char [icono.num_filas()*icono.num_cols()];
     conversorImagenVector(icono, vFinal);
     okay = escribirVector(tipo, frdo, nf, nc, vFinal);
     
+    //delete [] vFinal ;
     return okay;
 }
 
@@ -269,16 +271,16 @@ bool icono(const char *forig, char& *frdo, int nf, int nc){
  * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
  */
 
-bool aumentarContraste(const char *fichE, char& *fichS, const int min, const int max){
+bool aumentarContraste(const char *fichE, const char *fichS, const int min, const int max){
     
     bool okay;
-    byte *vOriginal, *vFinal;
-    int f, c;
+    byte *vOriginal;
+    int f, c, pixel;
     double rmax, rmin;
     
     f = c = 0;
     
-    TipoImagen tipo = LeerTipoImagen(fichE.c_str());
+    TipoImagen tipo = LeerTipoImagen(fichE);
     vOriginal = leerVector(tipo, fichE, f, c);                                  // Guardamos la imagen en un vector
 
     Imagen imagen(f,c);
@@ -286,19 +288,21 @@ bool aumentarContraste(const char *fichE, char& *fichS, const int min, const int
     rmax = rmin = imagen.valor_pixel(0,0);                                      // Inicializamos el valor de los niveles de grises
     
     for (int i = 0; i < f; i++)                                                 // Calcular niveles min y max de gris
-        for (int j=1; j<c; j++){
-            if(imagen.valor_pixel(f,c) > rmax)
-                rmax = imagen.valor_pixel(f,c);
-            if(imagen.valor_pixel(f,c) < rmin)
-                rmin = imagen.valor_pixel(f,c);
+        for (int j = 1; j < c; j++){
+            pixel = imagen.valor_pixel(i,j);
+            if( pixel > rmax)
+                rmax = pixel;
+            if(pixel < rmin)
+                rmin = pixel;
         } 
             
     const double cte = (max - min)/(rmax - rmin);
     
     for (int i = 0; i < f; i++)
         for (int j=0; j<c; j++)
-            imagen.asigna_pixel(f,c, transformacion(min, cte, rmin, imagen.valor_pixel(f,c)));
+            imagen.asigna_pixel(i,j, transformacion(min, cte, rmin, imagen.valor_pixel(i,j)));
     
+    byte *vFinal = new unsigned char [imagen.num_filas()*imagen.num_cols()];
     conversorImagenVector(imagen, vFinal);
     okay = escribirVector(tipo, fichS, f, c, vFinal);
     
@@ -310,7 +314,7 @@ bool aumentarContraste(const char *fichE, char& *fichS, const int min, const int
  */
 int main(int argc, char** argv) {
     
-    char *nentrada, *nsalida;
+    string salida, nsalida, nentrada;
     bool correcto;
     int op = 0, f = 0, c = 0, f2 = 0, c2 = 0, i = 0;
     
@@ -318,12 +322,13 @@ int main(int argc, char** argv) {
         errorBreak(3,"");
     else{
         nentrada = argv[1];
-        nsalida = argv[2];
+        salida = argv[2];
     }
     
+    salida.erase(salida.size()-4, 4);                                     // Le quitamos la extensión
     
     do{
-    nsalida.erase(nsalida.size()-4-i, 4+i);                                     // Le quitamos la extensión
+    nsalida = salida;
     cout << "Elija una opción (-1 para terminar): " << endl;
     cout << "[1] Umbralizar" << endl;
     cout << "[2] Zoom" << endl;
@@ -332,12 +337,13 @@ int main(int argc, char** argv) {
     cin >> op;
     
     nsalida += to_string(i) + ".pgm";
+    
     switch (op){
         
         case 1:
             cout << endl << "Ejercicio 1: UMBRALIZAR" << "\nInserte un umbral mínimo y máximo:"<< endl;
             cin >> f >> c;
-            correcto = umbralizar(nentrada, nsalida, f, c);
+            correcto = umbralizar(nentrada.c_str(), nsalida.c_str(), f, c);
     
             if(!correcto)
                 errorBreak(4,"umbralizar");
@@ -347,7 +353,7 @@ int main(int argc, char** argv) {
             cin >> f >> c;
             cout << "\nInserte las coordenadas finales:" << endl;
             cin >> f2 >> c2;
-            correcto = zoom(nentrada, nsalida, f, c, f2, c2);
+            correcto = zoom(nentrada.c_str(), nsalida.c_str(), f, c, f2, c2);
 
             if (!correcto)
                 errorBreak(4, "zoom");
@@ -355,7 +361,7 @@ int main(int argc, char** argv) {
         case 3: 
             cout << "\nEjercicio 3: ICONO" << "\nInserte un número de filas y columnas para el icono (debe ser cuadrado):" << endl;
             cin >> f >> c;
-            correcto = icono(nentrada, nsalida, f, c);
+            correcto = icono(nentrada.c_str(), nsalida.c_str(), f, c);
 
             if (!correcto)
                 errorBreak(4, "icono");
@@ -363,7 +369,7 @@ int main(int argc, char** argv) {
         case 4: 
             cout << endl << "Ejercicio 4: AUMENTAR CONTRASTE" << "\nInserte un mínimo y un máximo:" << endl;
             cin >> f >> c;
-            correcto = aumentarContraste(nentrada, nsalida, f, c);
+            correcto = aumentarContraste(nentrada.c_str(), nsalida.c_str(), f, c);
 
             if (!correcto)
                 errorBreak(4, "aumentar contraste");
@@ -371,7 +377,7 @@ int main(int argc, char** argv) {
     }
     
     i++;
-    } while (op != -1);
+    } while (op > 0);
        
     return 0;
 }
