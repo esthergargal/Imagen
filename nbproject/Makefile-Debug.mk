@@ -37,8 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/include/main.o \
 	${OBJECTDIR}/src/Imagen.o \
-	${OBJECTDIR}/src/imagenES.o \
-	${OBJECTDIR}/src/negativo.o
+	${OBJECTDIR}/src/imagenES.o
 
 
 # C Compiler Flags
@@ -68,22 +67,17 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/imagen.exe: ${OBJECTFILES}
 ${OBJECTDIR}/include/main.o: include/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/include
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/include/main.o include/main.cpp
+	$(COMPILE.cc) -g -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/include/main.o include/main.cpp
 
 ${OBJECTDIR}/src/Imagen.o: src/Imagen.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Imagen.o src/Imagen.cpp
+	$(COMPILE.cc) -g -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Imagen.o src/Imagen.cpp
 
 ${OBJECTDIR}/src/imagenES.o: src/imagenES.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/imagenES.o src/imagenES.cpp
-
-${OBJECTDIR}/src/negativo.o: src/negativo.cpp
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/negativo.o src/negativo.cpp
+	$(COMPILE.cc) -g -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/imagenES.o src/imagenES.cpp
 
 # Subprojects
 .build-subprojects:

@@ -23,6 +23,7 @@
 #define ERROR_UNKNOWN 1
 #define ERROR_OPEN 2
 #define ERROR_ARGS 3
+#define ERROR_FUNC 4
 
 using namespace std;
 
@@ -64,7 +65,7 @@ byte transformacion(double min, double constante, double rmin, double nivelOrigi
  * @precond T_1 < T_2
  * @return @retval true si la operación se ha realizado con éxito @retval false en caso contrario
  */
-bool umbralizar(std::string fin, std::string& fout, byte T_1, byte T_2);
+bool umbralizar(std::string fin, std::string& fout, int T_1, int T_2);
 
 /**
  * @brief Función que permite aumentar el tamaño de una porción de la Imagen
@@ -106,26 +107,65 @@ bool aumentarContraste(string fichE, string& fichS, const int min, const int max
 int main(int argc, char** argv) {
     
     string nentrada, nsalida;
+    bool correcto;
+    int op = 0, f = 0, c = 0, f2 = 0, c2 = 0, i = 1;
     
-    if(argc != 3)
+    if(argc != 2)
         errorBreak(3,"");
     else{
         nentrada = argv[1];
-        nsalida = argv[2];
     }
     
-    cout << endl << "Ejercicio 1: UMBRALIZAR" << endl;
-    umbralizar(nentrada, nsalida, );
+    do{
+    cout << "Elija una opción (-1 para terminar): " << endl;
+    cout << "[1] Umbralizar" << endl;
+    cout << "[2] Zoom" << endl;
+    cout << "[3] Icono" << endl;
+    cout << "[4] Aumentar contraste" << endl;
+    cin >> op;
     
-    cout << endl << "Ejercicio 3: ZOOM" << endl;
-    zoom(nentrada, nsalida, );
+    nsalida = nentrada + to_string(i);
+    switch (op){
+        
+        case 1:
+            cout << endl << "Ejercicio 1: UMBRALIZAR" << "\nInserte un umbral mínimo y máximo:"<< endl;
+            cin >> f >> c;
+            correcto = umbralizar(nentrada, nsalida, f, c);
     
-    cout << endl << "Ejercicio 4: ICONO" << endl;
-    icono(nentrada, nsalida, );
+            if(!correcto)
+                errorBreak(4,"umbralizar");
+            break;
+        case 2: 
+            cout << endl << "Ejercicio 2: ZOOM" << "\nInserte las coordenadas iniciales:" << endl;
+            cin >> f >> c;
+            cout << "\nInserte las coordenadas finales:" << endl;
+            cin >> f2 >> c2;
+            correcto = zoom(nentrada, nsalida, f, c, f2, c2);
+
+            if (!correcto)
+                errorBreak(4, "zoom");
+            break;
+        case 3: 
+            cout << "\nEjercicio 3: ICONO" << "\nInserte un número de filas y columnas para el icono (debe ser cuadrado):" << endl;
+            cin >> f >> c;
+            correcto = icono(nentrada, nsalida, f, c);
+
+            if (!correcto)
+                errorBreak(4, "icono");
+            break;
+        case 4: 
+            cout << endl << "Ejercicio 4: AUMENTAR CONTRASTE" << "\nInserte un mínimo y un máximo:" << endl;
+            cin >> f >> c;
+            correcto = aumentarContraste(nentrada, nsalida, f, c);
+
+            if (!correcto)
+                errorBreak(4, "aumentar contraste");
+            break;
+    }
     
-    cout << endl << "Ejercicio 5: AUMENTAR CONTRASTE" << endl;
-    aumentarContraste(nentrada, nsalida, 10, 100);
-    
+    i++;
+    } while (op != -1);
+       
     return 0;
 }
 
@@ -158,6 +198,10 @@ void errorBreak(int errorcode, const string &errordata) {
             break;
         case ERROR_ARGS:
             cerr<<"Please supply 2 arguments "<< endl;
+            break;
+        case ERROR_FUNC:
+            cerr<<"Error in function " << errordata << endl;
+            break;
     }
     exit(1);
 }
@@ -196,13 +240,17 @@ byte transformacion(double min, double constante, double rmin, double nivelOrigi
 }
 //--------------------------------EJERCICIO 1---------------------------------//
 
-bool umbralizar(string fin, string fout, byte T_1, byte T_2) {
+bool umbralizar(string fin, string fout, int T_1, int T_2) {
     // hay que abrir ficheros me cago en satanas
     bool okay;
     byte *img;
     Imagen imagen;
     int f = 0, c = 0;
 
+    if (T_1 < 0)
+        T_1 = 0;
+    if (T_2 > 255)
+        T_2 = 255;
     TipoImagen tipo = LeerTipoImagen(fin.c_str());
 
     img = leerVector(tipo, fin, f, c);                                          // Si el formato es desconocido, se termina la ejecución
